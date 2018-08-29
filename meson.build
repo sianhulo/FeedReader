@@ -1,5 +1,5 @@
 project('feedreader', ['vala', 'c'],
-  version: '2.4-dev',
+  version: '2.2.1',
   meson_version: '>= 0.44.1',
   license: 'GPL-3.0',
   default_options: ['prefix=/usr']
@@ -33,6 +33,7 @@ vala_compiler = meson.get_compiler('vala')
 c_compiler = meson.get_compiler('c')
 
 # Other tools
+afl_fuzz = find_program('afl-fuzz', required:false) # american fuzzy lop
 gtester = find_program('gtester', required:false)
 
 # Dependencies

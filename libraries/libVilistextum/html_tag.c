@@ -20,6 +20,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <wctype.h>
 
 #include "html.h"
 #include "text.h"
@@ -40,7 +41,7 @@ void html_tag()
 	/* '!' -> CDATA section or comment */
 	/* '/' -> end tag */
 	/* '?' -> XML processing instruction */
-	if ((!isalpha(ch)) && (ch!='/') && (ch!='!') && (ch!='?'))
+	if ((!iswalpha(ch)) && (ch!='/') && (ch!='!') && (ch!='?'))
 	{
 		wort_plus_ch('<');
 		putback_char(ch);
@@ -49,7 +50,7 @@ void html_tag()
 	}
 
 	/* read html tag */
-	while ((ch!='>') && (ch!=' ') && (ch!=13) && (ch!=10))
+	while ((ch!='>') && (ch!=' ') && (ch!=13) && (ch!=10) && (ch!=EOF))
 	{
 		if (i<DEF_STR_LEN-1) { str[i++] = ch; }
 		ch = uppercase(read_char());
@@ -71,7 +72,7 @@ void html_tag()
 
 	if (nooutput==0) {
 		if CMP("/HTML", str) {/* fprintf(stderr, "File ended!\n"); */ }
-		else if CMP("!DOCTYPE", str)  { while ((ch=read_char())!='>'); }
+		else if CMP("!DOCTYPE", str)  { while ((ch=read_char())!='>' && ch!=EOF); }
 		else if CMP("META", str)      { find_encoding(); }
 		else if CMP("?XML", str)      { find_xml_encoding(); }
 
